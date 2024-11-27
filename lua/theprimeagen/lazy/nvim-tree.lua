@@ -9,7 +9,7 @@ return {
     require("nvim-tree").setup({
       git = {
         enable = true,  -- Enable Git integration if supported
-        ignore = false, -- Show .gitignore files
+        ignore = true, -- Show .gitignore files
         timeout = 400,  -- Set a timeout for Git operations
       },
       view = {
@@ -32,7 +32,7 @@ return {
       },
       actions = {
         open_file = {
-          quit_on_open = true, -- Close tree when a file is opened
+          quit_on_open = false, -- Close tree when a file is opened
         },
       },
       diagnostics = {
@@ -51,10 +51,20 @@ return {
         api.config.mappings.default_on_attach(bufnr)
 
         -- Custom Git mappings
-        vim.keymap.set("n", "gs", function()
+        vim.keymap.set("n", "ga", function()
           local node = api.tree.get_node_under_cursor()
           if node and node.absolute_path then
             vim.cmd("!git add " .. vim.fn.fnameescape(node.absolute_path))
+            print("Staged: " .. node.absolute_path)
+          else
+            print("No file selected")
+          end
+        end, { buffer = bufnr, noremap = true, silent = true })
+
+        vim.keymap.set("n", "gs", function()
+          local node = api.tree.get_node_under_cursor()
+          if node and node.absolute_path then
+            vim.cmd("!git status " .. vim.fn.fnameescape(node.absolute_path))
             print("Staged: " .. node.absolute_path)
           else
             print("No file selected")

@@ -27,7 +27,6 @@ return {
         require("mason-lspconfig").setup({
             ensure_installed = {
                 "omnisharp",           -- C#
-                "tsserver",            -- JavaScript and TypeScript
                 "jdtls",               -- Java
                 "angularls",           -- Angular
                 "helm_ls",             -- Helm
